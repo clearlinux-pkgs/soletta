@@ -5,3 +5,9 @@ glib-dev
 jsonschema
 python3
 systemd-dev
+pcre-dev
+icu4c-dev
+graphviz
+curl-dev
+check
+gtk+-dev

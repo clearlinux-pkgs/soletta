@@ -4,7 +4,7 @@
 #
 Name     : soletta
 Version  : 1_beta6
-Release  : 11
+Release  : 14
 URL      : https://github.com/solettaproject/soletta/archive/v1_beta6.tar.gz
 Source0  : https://github.com/solettaproject/soletta/archive/v1_beta6.tar.gz
 Source1  : https://github.com/solettaproject/duktape-release/archive/duktape_v1_beta2.tar.gz
@@ -14,9 +14,15 @@ License  : BSD-3-Clause GPL-2.0 MIT Python-2.0
 Requires: soletta-bin
 Requires: soletta-lib
 Requires: soletta-data
+BuildRequires : check
 BuildRequires : chrpath-bin
+BuildRequires : curl-dev
 BuildRequires : glib-dev
+BuildRequires : graphviz
+BuildRequires : gtk+-dev
+BuildRequires : icu4c-dev
 BuildRequires : jsonschema
+BuildRequires : pcre-dev
 BuildRequires : python3
 BuildRequires : systemd-dev
 
@@ -123,14 +129,17 @@ rm -rf %{buildroot}
 /usr/share/soletta/flow/descriptions/file.json
 /usr/share/soletta/flow/descriptions/filter-repeated.json
 /usr/share/soletta/flow/descriptions/float.json
+/usr/share/soletta/flow/descriptions/flower-power.json
 /usr/share/soletta/flow/descriptions/gpio.json
 /usr/share/soletta/flow/descriptions/grove.json
 /usr/share/soletta/flow/descriptions/gyroscope.json
+/usr/share/soletta/flow/descriptions/http-client.json
 /usr/share/soletta/flow/descriptions/iio.json
 /usr/share/soletta/flow/descriptions/int.json
 /usr/share/soletta/flow/descriptions/keyboard.json
 /usr/share/soletta/flow/descriptions/led-7seg.json
 /usr/share/soletta/flow/descriptions/led-strip.json
+/usr/share/soletta/flow/descriptions/location.json
 /usr/share/soletta/flow/descriptions/magnetometer.json
 /usr/share/soletta/flow/descriptions/max31855.json
 /usr/share/soletta/flow/descriptions/network.json
@@ -146,6 +155,7 @@ rm -rf %{buildroot}
 /usr/share/soletta/flow/descriptions/switcher.json
 /usr/share/soletta/flow/descriptions/temperature.json
 /usr/share/soletta/flow/descriptions/test.json
+/usr/share/soletta/flow/descriptions/thingspeak.json
 /usr/share/soletta/flow/descriptions/timer.json
 /usr/share/soletta/flow/descriptions/timestamp.json
 /usr/share/soletta/flow/descriptions/trigonometry.json
@@ -188,14 +198,17 @@ rm -rf %{buildroot}
 /usr/include/soletta/sol-flow/file.h
 /usr/include/soletta/sol-flow/filter-repeated.h
 /usr/include/soletta/sol-flow/float.h
+/usr/include/soletta/sol-flow/flower-power.h
 /usr/include/soletta/sol-flow/gpio.h
 /usr/include/soletta/sol-flow/grove.h
 /usr/include/soletta/sol-flow/gyroscope.h
+/usr/include/soletta/sol-flow/http-client.h
 /usr/include/soletta/sol-flow/iio.h
 /usr/include/soletta/sol-flow/int.h
 /usr/include/soletta/sol-flow/keyboard.h
 /usr/include/soletta/sol-flow/led-7seg.h
 /usr/include/soletta/sol-flow/led-strip.h
+/usr/include/soletta/sol-flow/location.h
 /usr/include/soletta/sol-flow/magnetometer.h
 /usr/include/soletta/sol-flow/max31855.h
 /usr/include/soletta/sol-flow/network.h
@@ -211,15 +224,19 @@ rm -rf %{buildroot}
 /usr/include/soletta/sol-flow/switcher.h
 /usr/include/soletta/sol-flow/temperature.h
 /usr/include/soletta/sol-flow/test.h
+/usr/include/soletta/sol-flow/thingspeak.h
 /usr/include/soletta/sol-flow/timer.h
 /usr/include/soletta/sol-flow/timestamp.h
 /usr/include/soletta/sol-flow/trigonometry.h
 /usr/include/soletta/sol-flow/udev.h
 /usr/include/soletta/sol-flow/unix-socket.h
 /usr/include/soletta/sol-flow/wallclock.h
+/usr/include/soletta/sol-flower-power.h
 /usr/include/soletta/sol-fs-storage.h
 /usr/include/soletta/sol-glib-integration.h
 /usr/include/soletta/sol-gpio.h
+/usr/include/soletta/sol-http-client.h
+/usr/include/soletta/sol-http.h
 /usr/include/soletta/sol-i2c.h
 /usr/include/soletta/sol-iio.h
 /usr/include/soletta/sol-json.h
@@ -254,11 +271,14 @@ rm -rf %{buildroot}
 /usr/lib64/soletta/modules/flow/compass.so
 /usr/lib64/soletta/modules/flow/evdev.so
 /usr/lib64/soletta/modules/flow/file.so
+/usr/lib64/soletta/modules/flow/flower-power.so
 /usr/lib64/soletta/modules/flow/grove.so
 /usr/lib64/soletta/modules/flow/gyroscope.so
+/usr/lib64/soletta/modules/flow/http-client.so
 /usr/lib64/soletta/modules/flow/iio.so
 /usr/lib64/soletta/modules/flow/keyboard.so
 /usr/lib64/soletta/modules/flow/led-strip.so
+/usr/lib64/soletta/modules/flow/location.so
 /usr/lib64/soletta/modules/flow/magnetometer.so
 /usr/lib64/soletta/modules/flow/max31855.so
 /usr/lib64/soletta/modules/flow/network.so
@@ -268,6 +288,7 @@ rm -rf %{buildroot}
 /usr/lib64/soletta/modules/flow/process.so
 /usr/lib64/soletta/modules/flow/servo-motor.so
 /usr/lib64/soletta/modules/flow/test.so
+/usr/lib64/soletta/modules/flow/thingspeak.so
 /usr/lib64/soletta/modules/flow/udev.so
 /usr/lib64/soletta/modules/flow/unix-socket.so
 /usr/lib64/soletta/modules/pin-mux/intel-edison-rev-c.so
