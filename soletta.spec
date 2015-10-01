@@ -4,7 +4,7 @@
 #
 Name     : soletta
 Version  : 1_beta6
-Release  : 10
+Release  : 11
 URL      : https://github.com/solettaproject/soletta/archive/v1_beta6.tar.gz
 Source0  : https://github.com/solettaproject/soletta/archive/v1_beta6.tar.gz
 Source1  : https://github.com/solettaproject/duktape-release/archive/duktape_v1_beta2.tar.gz
