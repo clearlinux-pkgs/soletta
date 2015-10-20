@@ -11,3 +11,4 @@ graphviz
 curl-dev
 check
 gtk+-dev
+openssl-dev
