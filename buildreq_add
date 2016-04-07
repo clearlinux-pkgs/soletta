@@ -12,3 +12,5 @@ curl-dev
 check
 gtk+-dev
 openssl-dev
+mosquitto-dev
+mosquitto-lib

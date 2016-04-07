@@ -4,11 +4,14 @@
 #
 Name     : soletta
 Version  : 1_beta17
-Release  : 25
+Release  : 26
 URL      : https://github.com/solettaproject/soletta/archive/v1_beta17.tar.gz
 Source0  : https://github.com/solettaproject/soletta/archive/v1_beta17.tar.gz
-Source1  : https://github.com/solettaproject/duktape-release/archive/duktape_v1_beta2.tar.gz
-Summary  : Soletta Project is a framework for making IoT devices.
+Source1  : http://downloads.sourceforge.net/tinydtls/tinydtls-0.8.2.tar.gz
+Source2  : https://github.com/01org/tinycbor/archive/v0.2.tar.gz
+Source3  : https://github.com/mavlink/c_library/archive/master.tar.gz
+Source4  : https://github.com/solettaproject/duktape-release/archive/duktape_v1_beta2.tar.gz
+Summary  : A tiny CBOR encoder and decoder library
 Group    : Development/Tools
 License  : Apache-2.0 GPL-2.0 MIT Python-2.0
 Requires: soletta-bin
@@ -22,8 +25,11 @@ BuildRequires : graphviz
 BuildRequires : gtk+-dev
 BuildRequires : icu4c-dev
 BuildRequires : jsonschema
+BuildRequires : mosquitto-dev
+BuildRequires : mosquitto-lib
 BuildRequires : openssl-dev
 BuildRequires : pcre-dev
+BuildRequires : pkgconfig(libmicrohttpd)
 BuildRequires : python3
 BuildRequires : systemd-dev
 
@@ -72,20 +78,23 @@ lib components for the soletta package.
 
 
 %prep
+tar -xf %{SOURCE4}
+tar -xf %{SOURCE2}
 tar -xf %{SOURCE1}
+tar -xf %{SOURCE3}
 cd ..
 %setup -q -n soletta-1_beta17
 mkdir -p %{_topdir}/BUILD/soletta-1_beta17/src/thirdparty/duktape/
 mv %{_topdir}/BUILD/duktape-release-duktape_v1_beta2/* %{_topdir}/BUILD/soletta-1_beta17/src/thirdparty/duktape/
+mkdir -p %{_topdir}/BUILD/soletta-1_beta17/src/thirdparty/tinycbor/
+mv %{_topdir}/BUILD/tinycbor-0.2/* %{_topdir}/BUILD/soletta-1_beta17/src/thirdparty/tinycbor/
+mkdir -p %{_topdir}/BUILD/soletta-1_beta17/src/thirdparty/tinydtls/
+mv %{_topdir}/BUILD/tinydtls-0.8.2/* %{_topdir}/BUILD/soletta-1_beta17/src/thirdparty/tinydtls/
+mkdir -p %{_topdir}/BUILD/soletta-1_beta17/src/thirdparty/mavlink/
+mv %{_topdir}/BUILD/c_library-master/* %{_topdir}/BUILD/soletta-1_beta17/src/thirdparty/mavlink/
 
 %build
 make V=1  %{?_smp_mflags} -h; export LIBDIR=%{_libdir}/; make V=1 alldefconfig; make V=1
-
-%check
-export http_proxy=http://127.0.0.1:9/
-export https_proxy=http://127.0.0.1:9/
-export no_proxy=localhost
-make check
 
 %install
 rm -rf %{buildroot}
@@ -131,6 +140,7 @@ rm -rf %{buildroot}
 /usr/share/soletta/flow/descriptions/grove.json
 /usr/share/soletta/flow/descriptions/gyroscope.json
 /usr/share/soletta/flow/descriptions/http-client.json
+/usr/share/soletta/flow/descriptions/http-server.json
 /usr/share/soletta/flow/descriptions/iio.json
 /usr/share/soletta/flow/descriptions/int.json
 /usr/share/soletta/flow/descriptions/json.json
@@ -140,7 +150,10 @@ rm -rf %{buildroot}
 /usr/share/soletta/flow/descriptions/location.json
 /usr/share/soletta/flow/descriptions/magnetometer.json
 /usr/share/soletta/flow/descriptions/max31855.json
+/usr/share/soletta/flow/descriptions/mqtt.json
 /usr/share/soletta/flow/descriptions/network.json
+/usr/share/soletta/flow/descriptions/oauth.json
+/usr/share/soletta/flow/descriptions/oic.json
 /usr/share/soletta/flow/descriptions/persistence.json
 /usr/share/soletta/flow/descriptions/piezo-speaker.json
 /usr/share/soletta/flow/descriptions/platform.json
@@ -158,6 +171,7 @@ rm -rf %{buildroot}
 /usr/share/soletta/flow/descriptions/timer.json
 /usr/share/soletta/flow/descriptions/timestamp.json
 /usr/share/soletta/flow/descriptions/trigonometry.json
+/usr/share/soletta/flow/descriptions/twitter.json
 /usr/share/soletta/flow/descriptions/udev.json
 /usr/share/soletta/flow/descriptions/unix-socket.json
 /usr/share/soletta/flow/descriptions/update.json
@@ -206,6 +220,7 @@ rm -rf %{buildroot}
 /usr/include/soletta/sol-flow/grove.h
 /usr/include/soletta/sol-flow/gyroscope.h
 /usr/include/soletta/sol-flow/http-client.h
+/usr/include/soletta/sol-flow/http-server.h
 /usr/include/soletta/sol-flow/iio.h
 /usr/include/soletta/sol-flow/int.h
 /usr/include/soletta/sol-flow/json.h
@@ -215,7 +230,10 @@ rm -rf %{buildroot}
 /usr/include/soletta/sol-flow/location.h
 /usr/include/soletta/sol-flow/magnetometer.h
 /usr/include/soletta/sol-flow/max31855.h
+/usr/include/soletta/sol-flow/mqtt.h
 /usr/include/soletta/sol-flow/network.h
+/usr/include/soletta/sol-flow/oauth.h
+/usr/include/soletta/sol-flow/oic.h
 /usr/include/soletta/sol-flow/persistence.h
 /usr/include/soletta/sol-flow/piezo-speaker.h
 /usr/include/soletta/sol-flow/platform.h
@@ -233,6 +251,7 @@ rm -rf %{buildroot}
 /usr/include/soletta/sol-flow/timer.h
 /usr/include/soletta/sol-flow/timestamp.h
 /usr/include/soletta/sol-flow/trigonometry.h
+/usr/include/soletta/sol-flow/twitter.h
 /usr/include/soletta/sol-flow/udev.h
 /usr/include/soletta/sol-flow/unix-socket.h
 /usr/include/soletta/sol-flow/update.h
@@ -242,6 +261,7 @@ rm -rf %{buildroot}
 /usr/include/soletta/sol-glib-integration.h
 /usr/include/soletta/sol-gpio.h
 /usr/include/soletta/sol-http-client.h
+/usr/include/soletta/sol-http-server.h
 /usr/include/soletta/sol-http.h
 /usr/include/soletta/sol-i2c.h
 /usr/include/soletta/sol-iio.h
@@ -251,9 +271,14 @@ rm -rf %{buildroot}
 /usr/include/soletta/sol-lwm2m.h
 /usr/include/soletta/sol-macros.h
 /usr/include/soletta/sol-mainloop.h
+/usr/include/soletta/sol-mavlink.h
 /usr/include/soletta/sol-memmap-storage.h
 /usr/include/soletta/sol-message-digest.h
+/usr/include/soletta/sol-mqtt.h
 /usr/include/soletta/sol-network.h
+/usr/include/soletta/sol-oic-client.h
+/usr/include/soletta/sol-oic-common.h
+/usr/include/soletta/sol-oic-server.h
 /usr/include/soletta/sol-pin-mux-modules.h
 /usr/include/soletta/sol-pin-mux.h
 /usr/include/soletta/sol-platform.h
@@ -279,6 +304,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 /usr/lib/*.so.*
 /usr/lib/soletta/modules/flow-metatype/http-composed-client.so
+/usr/lib/soletta/modules/flow-metatype/http-composed-server.so
 /usr/lib/soletta/modules/flow-metatype/js.so
 /usr/lib/soletta/modules/flow/accelerometer.so
 /usr/lib/soletta/modules/flow/am2315.so
@@ -291,6 +317,7 @@ rm -rf %{buildroot}
 /usr/lib/soletta/modules/flow/grove.so
 /usr/lib/soletta/modules/flow/gyroscope.so
 /usr/lib/soletta/modules/flow/http-client.so
+/usr/lib/soletta/modules/flow/http-server.so
 /usr/lib/soletta/modules/flow/iio.so
 /usr/lib/soletta/modules/flow/json.so
 /usr/lib/soletta/modules/flow/keyboard.so
@@ -298,7 +325,10 @@ rm -rf %{buildroot}
 /usr/lib/soletta/modules/flow/location.so
 /usr/lib/soletta/modules/flow/magnetometer.so
 /usr/lib/soletta/modules/flow/max31855.so
+/usr/lib/soletta/modules/flow/mqtt.so
 /usr/lib/soletta/modules/flow/network.so
+/usr/lib/soletta/modules/flow/oauth.so
+/usr/lib/soletta/modules/flow/oic.so
 /usr/lib/soletta/modules/flow/persistence.so
 /usr/lib/soletta/modules/flow/piezo-speaker.so
 /usr/lib/soletta/modules/flow/power-supply.so
@@ -307,6 +337,7 @@ rm -rf %{buildroot}
 /usr/lib/soletta/modules/flow/stts751.so
 /usr/lib/soletta/modules/flow/test.so
 /usr/lib/soletta/modules/flow/thingspeak.so
+/usr/lib/soletta/modules/flow/twitter.so
 /usr/lib/soletta/modules/flow/udev.so
 /usr/lib/soletta/modules/flow/unix-socket.so
 /usr/lib/soletta/modules/flow/update.so
@@ -315,6 +346,7 @@ rm -rf %{buildroot}
 /usr/lib/soletta/modules/pin-mux/intel-galileo-rev-g.so
 /usr/lib64/*.so.*
 /usr/lib64/soletta/modules/flow-metatype/http-composed-client.so
+/usr/lib64/soletta/modules/flow-metatype/http-composed-server.so
 /usr/lib64/soletta/modules/flow-metatype/js.so
 /usr/lib64/soletta/modules/flow/accelerometer.so
 /usr/lib64/soletta/modules/flow/am2315.so
@@ -327,6 +359,7 @@ rm -rf %{buildroot}
 /usr/lib64/soletta/modules/flow/grove.so
 /usr/lib64/soletta/modules/flow/gyroscope.so
 /usr/lib64/soletta/modules/flow/http-client.so
+/usr/lib64/soletta/modules/flow/http-server.so
 /usr/lib64/soletta/modules/flow/iio.so
 /usr/lib64/soletta/modules/flow/json.so
 /usr/lib64/soletta/modules/flow/keyboard.so
@@ -334,7 +367,10 @@ rm -rf %{buildroot}
 /usr/lib64/soletta/modules/flow/location.so
 /usr/lib64/soletta/modules/flow/magnetometer.so
 /usr/lib64/soletta/modules/flow/max31855.so
+/usr/lib64/soletta/modules/flow/mqtt.so
 /usr/lib64/soletta/modules/flow/network.so
+/usr/lib64/soletta/modules/flow/oauth.so
+/usr/lib64/soletta/modules/flow/oic.so
 /usr/lib64/soletta/modules/flow/persistence.so
 /usr/lib64/soletta/modules/flow/piezo-speaker.so
 /usr/lib64/soletta/modules/flow/power-supply.so
@@ -343,6 +379,7 @@ rm -rf %{buildroot}
 /usr/lib64/soletta/modules/flow/stts751.so
 /usr/lib64/soletta/modules/flow/test.so
 /usr/lib64/soletta/modules/flow/thingspeak.so
+/usr/lib64/soletta/modules/flow/twitter.so
 /usr/lib64/soletta/modules/flow/udev.so
 /usr/lib64/soletta/modules/flow/unix-socket.so
 /usr/lib64/soletta/modules/flow/update.so
