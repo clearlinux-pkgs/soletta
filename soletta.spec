@@ -4,7 +4,7 @@
 #
 Name     : soletta
 Version  : 1_beta20
-Release  : 31
+Release  : 32
 URL      : https://github.com/solettaproject/soletta/archive/v1_beta20.tar.gz
 Source0  : https://github.com/solettaproject/soletta/archive/v1_beta20.tar.gz
 Source1  : http://downloads.sourceforge.net/tinydtls/tinydtls-0.8.2.tar.gz
