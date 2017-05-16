@@ -4,7 +4,7 @@
 #
 Name     : soletta
 Version  : 1
-Release  : 37
+Release  : 38
 URL      : https://github.com/solettaproject/soletta/archive/v1.tar.gz
 Source0  : https://github.com/solettaproject/soletta/archive/v1.tar.gz
 Source1  : https://github.com/01org/tinycbor/archive/v0.2.tar.gz
